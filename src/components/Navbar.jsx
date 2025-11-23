@@ -1,22 +1,46 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import '../styles/layout.css'
 
 export default function Navbar() {
+
   const { user, logout } = useAuth()
   const nav = useNavigate()
+  const location = useLocation()   // <-- detects current route
 
   const handleLogout = () => {
     logout()
     nav('/login')
   }
 
+  
+  const handleSearch = (e) => {
+  const key = e.target.value;
+  nav(`/tasks?search=${key}`);
+}
+
   return (
     <nav className="nav">
+
       <div className="nav-left">
         <Link to="/" className="brand">TaskFlow</Link>
+
+
+
+        {/* search bar only for tasks route */}
+
+        {location.pathname === "/tasks" ? (
+          <input 
+            type="search" 
+            className='nav-search'
+            size={20} 
+            placeholder="search 🔍" 
+            onChange={handleSearch}
+          />
+        ) : null}
       </div>
+
       <div className="nav-right">
         {user ? (
           <>
@@ -31,6 +55,7 @@ export default function Navbar() {
           </>
         )}
       </div>
+
     </nav>
   )
 }

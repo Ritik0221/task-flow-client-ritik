@@ -7,6 +7,25 @@
 .nav-link:hover{background:rgba(37,99,235,0.06)}
 .nav-user{font-size:0.95rem;color:var(--muted)}
 
+
+.nav-search{
+  padding: 8px 14px;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: 1px solid #d0d7de;
+  width: 240px;
+  transition: all 0.2s ease;
+  background: #f9f9f9;
+}
+
+.nav-search:focus {
+  background: white;
+  border-color: #0077ff;
+  outline: none;
+  box-shadow: 0 0 4px #0077ff50;
+}
+
+
 /* small layout helpers */
 .container{max-width:1100px;margin:28px auto;padding:0 20px}
 
@@ -14,4 +33,5 @@
 	.nav{padding:12px}
 	.brand{font-size:1rem}
 	.nav-right{gap:8px}
+	.nav-search{width:120px}
 }

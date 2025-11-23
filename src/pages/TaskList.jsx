@@ -1,16 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import axios from '../api/axiosInstance'
 import TaskCard from '../components/TaskCard'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
 
+  // Get search query from URL
+  const [searchParams] = useSearchParams()
+
+
+
+  const searchQuery = searchParams.get("search") || ""
+
   const fetchTasks = async () => {
     try {
-      const res = await axios.get('/tasks')
-      setTasks(res.data)
+      let res;
+      if (searchQuery) {
+        res = await axios.get(`/tasks/search/${searchQuery}`)
+        setTasks(res.data.result)
+      } else {
+        res = await axios.get('/tasks')
+        setTasks(res.data)
+      }
     } catch (err) {
       console.error(err)
     } finally {
@@ -18,7 +31,7 @@ export default function TaskList() {
     }
   }
 
-  useEffect(() => { fetchTasks() }, [])
+  useEffect(() => { fetchTasks() }, [searchQuery])
 
   const handleDelete = async (id) => {
     if (!confirm('Delete task?')) return
@@ -40,7 +53,7 @@ export default function TaskList() {
       </div>
 
       {tasks.length === 0 ? (
-        <p>No tasks yet. Create one!</p>
+        <p>No tasks found.</p>
       ) : (
         <div className="tasks-grid">
           {tasks.map(t => (
