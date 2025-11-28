@@ -1,81 +1,83 @@
-import React, { useEffect, useState , useMemo} from 'react'
-import axios from '../api/axiosInstance'
-import TaskCard from '../components/TaskCard'
-import { Link, useSearchParams } from 'react-router-dom'
-import { SortTasks } from '../utils/sortTasks'
-import { updateTaskStatus } from '../utils/updateTaskStatus'
+import React, { useEffect, useState, useMemo } from "react";
+import axios from "../api/axiosInstance";
+import TaskCard from "../components/TaskCard";
+import { Link, useSearchParams } from "react-router-dom";
+import { SortTasks } from "../utils/sortTasks";
+import { updateTaskStatus } from "../utils/updateTaskStatus";
 
 export default function TaskList() {
-  const [tasks, setTasks] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
   //states to manage filters
-  const [Filter, setFilter] = useState('')
+  const [Filter, setFilter] = useState("");
 
-
-  
   // Sorting State
-  const [sort, setSort] = useState("")
+  const [sort, setSort] = useState("");
 
   // Get search query from URL
-  const [searchParams] = useSearchParams()
+  const [searchParams] = useSearchParams();
 
+  // Status Filter State
+  const [statusFilter, setStatusFilter] = useState("");
 
-
-  const searchQuery = searchParams.get("search") || ""
+  const searchQuery = searchParams.get("search") || "";
 
   const fetchTasks = async () => {
     try {
       let res;
       if (searchQuery) {
-        res = await axios.get(`/tasks/search/${searchQuery}`)
-        setTasks(res.data.result)
+        res = await axios.get(`/tasks/search/${searchQuery}`);
+        setTasks(res.data.result);
       } else {
-        res = await axios.get('/tasks')
-        setTasks(res.data)
+        res = await axios.get("/tasks");
+        setTasks(res.data);
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  useEffect(() => { fetchTasks() }, [searchQuery])
+  useEffect(() => {
+    fetchTasks();
+  }, [searchQuery]);
 
   const handleDelete = async (id) => {
-    if (!confirm('Delete task?')) return
+    if (!confirm("Delete task?")) return;
     try {
-      await axios.delete(`/tasks/${id}`)
-      setTasks(tasks.filter(t => t._id !== id))
+      await axios.delete(`/tasks/${id}`);
+      setTasks(tasks.filter((t) => t._id !== id));
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
-
+  };
 
   // Filter tasks based on priority
   const filteredTasks = useMemo(() => {
-  let list = Filter === "" ? tasks : tasks.filter(task => task.priority === Filter);
-  return SortTasks(list, sort);
-}, [tasks, Filter, sort]);
+    let list =
+      Filter === "" ? tasks : tasks.filter((task) => task.priority === Filter);
 
-    // Mark Completed
-  const handleComplete = async (id) => {
-    const res = await updateTaskStatus(id)
-    if (res?.success) {
-      setTasks(prev =>
-        prev.map(t =>
-          t._id === id ? { ...t, status: "Completed" } : t
-        )
-      )
-    }
+       if (statusFilter !== "") {
+    list = list.filter(t => t.status === statusFilter);
   }
- 
+    return SortTasks(list, sort);
+  }, [tasks, Filter, sort, statusFilter]);
 
-  if (loading) return <div className="center">Loading...</div>
+  // Mark Completed
+  const handleComplete = async (id) => {
+    const res = await updateTaskStatus(id);
+    if (res?.success) {
+      setTasks((prev) =>
+        prev.map((t) => (t._id === id ? { ...t, status: "Completed" } : t))
+      );
+    }
+  };
+
+  if (loading) return <div className="center">Loading...</div>;
 
   return (
-        <div>
+    <div>
       <div className="page-header">
         <div className="page-header-left">
           <h2>Your Tasks</h2>
@@ -83,6 +85,17 @@ export default function TaskList() {
 
         <div className="page-header-right">
           {/* Priority Filter */}
+
+          <select
+            className="status-filter"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="">Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+          </select>
+
           <select
             className="priority-filter"
             value={Filter}
@@ -96,8 +109,7 @@ export default function TaskList() {
             <option value="High">High</option>
           </select>
 
-
-           {/* Priority Sorting */}
+          {/* Priority Sorting */}
           <select
             className="priority-sort"
             value={sort}
@@ -108,7 +120,9 @@ export default function TaskList() {
             <option value="high-low">High → Med → Low</option>
           </select>
 
-          <Link to="/tasks/add" className="btn">Add Task</Link>
+          <Link to="/tasks/add" className="btn">
+            Add Task
+          </Link>
         </div>
       </div>
 
@@ -116,11 +130,16 @@ export default function TaskList() {
         <p>No tasks found.</p>
       ) : (
         <div className="tasks-grid">
-          {filteredTasks.map(t => (
-            <TaskCard key={t._id} task={t} onDelete={handleDelete}  onComplete={handleComplete} />
+          {filteredTasks.map((t) => (
+            <TaskCard
+              key={t._id}
+              task={t}
+              onDelete={handleDelete}
+              onComplete={handleComplete}
+            />
           ))}
         </div>
       )}
     </div>
-  )
+  );
 }
