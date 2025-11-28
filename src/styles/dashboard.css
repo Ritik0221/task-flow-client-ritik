@@ -6,7 +6,19 @@
 .stat-box p{color:var(--muted);margin:6px 0 0}
 .tasks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:16px}
 .task-card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 8px 20px rgba(12,18,28,0.05);display:flex;flex-direction:column;gap:8px}
-.task-card.completed{opacity:0.85}
+/* Dim completed cards */
+.task-card.completed {
+  opacity: 0.6;          /* Light fade */
+  transition: opacity 0.3s ease;
+  background-color: #8591876a; 
+  /* color: white; Light gray background */
+}
+
+/* Optional: When hovering, bring back clarity */
+.task-card.completed:hover {
+  opacity: 0.85;
+}
+
 .task-header{display:flex;justify-content:space-between;align-items:center}
 .task-meta{display:flex;gap:8px;align-items:center}
 .priority {
