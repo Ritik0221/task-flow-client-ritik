@@ -87,11 +87,11 @@ export default function TaskList() {
           {/* Priority Filter */}
 
           <select
-            className="status-filter"
+            className="priority-sort"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
-            <option value="">Status</option>
+            <option value="">Task Status</option>
             <option value="Pending">Pending</option>
             <option value="Completed">Completed</option>
           </select>

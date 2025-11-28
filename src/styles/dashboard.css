@@ -8,14 +8,16 @@
 .task-card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 8px 20px rgba(12,18,28,0.05);display:flex;flex-direction:column;gap:8px}
 /* Dim completed cards */
 .task-card.completed {
-  opacity: 0.6;          /* Light fade */
-  transition: opacity 0.3s ease;
-  background-color: #8591876a; 
-  /* color: white; Light gray background */
+   opacity: 0.55;         
+  transition: opacity 1s ease;
+  background-color: #fefefe; 
+   /* color: white; */
 }
 
 /* Optional: When hovering, bring back clarity */
 .task-card.completed:hover {
+    background-color: rgb(210, 208, 208);
+    color: rgb(0, 0, 0);
   opacity: 0.85;
 }
 
@@ -51,7 +53,7 @@
   padding: 6px 8px;
   border-radius: 8px;
   font-size: 0.85rem;
-  transition: all 0.25s ease;
+  transition: all 5s ease;
   font-weight: 500;
 }
 
@@ -63,8 +65,8 @@
 
 /* Completed = green */
 .status.completed {
-  background: rgba(16,185,129,0.12);
-  color: #059669;
+  background: rgba(15, 222, 74, 0.329);
+  color: #28983e;
 }
 
 
@@ -74,7 +76,7 @@
 
 
 .complete-btn {
-  transition: opacity 10s ease;
+  transition: opacity 1s ease;
 }
 
 .complete-btn[style*="hidden"] {
