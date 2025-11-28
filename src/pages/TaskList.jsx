@@ -3,6 +3,7 @@ import axios from '../api/axiosInstance'
 import TaskCard from '../components/TaskCard'
 import { Link, useSearchParams } from 'react-router-dom'
 import { SortTasks } from '../utils/sortTasks'
+import { updateTaskStatus } from '../utils/updateTaskStatus'
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([])
@@ -58,7 +59,17 @@ export default function TaskList() {
   return SortTasks(list, sort);
 }, [tasks, Filter, sort]);
 
-
+    // Mark Completed
+  const handleComplete = async (id) => {
+    const res = await updateTaskStatus(id)
+    if (res?.success) {
+      setTasks(prev =>
+        prev.map(t =>
+          t._id === id ? { ...t, status: "Completed" } : t
+        )
+      )
+    }
+  }
  
 
   if (loading) return <div className="center">Loading...</div>
@@ -106,7 +117,7 @@ export default function TaskList() {
       ) : (
         <div className="tasks-grid">
           {filteredTasks.map(t => (
-            <TaskCard key={t._id} task={t} onDelete={handleDelete} />
+            <TaskCard key={t._id} task={t} onDelete={handleDelete}  onComplete={handleComplete} />
           ))}
         </div>
       )}

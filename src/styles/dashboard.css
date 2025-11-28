@@ -9,10 +9,65 @@
 .task-card.completed{opacity:0.85}
 .task-header{display:flex;justify-content:space-between;align-items:center}
 .task-meta{display:flex;gap:8px;align-items:center}
-.priority{background:rgba(16,185,129,0.08);color:#059669;padding:6px 8px;border-radius:8px;font-size:0.85rem}
-.status{background:rgba(37,99,235,0.08);color:var(--accent);padding:6px 8px;border-radius:8px;font-size:0.85rem}
+.priority {
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+/* Low = Red */
+.priority.low {
+  background: rgba(239,68,68,0.12);
+  color: var(--danger);
+}
+
+/* Medium = Yellow */
+.priority.medium {
+  background: rgba(234,179,8,0.15);
+  color: #b45309;
+}
+
+/* High = Green */
+.priority.high {
+  background: rgba(16,185,129,0.12);
+  color: #059669;
+}
+
+.status {
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  transition: all 0.25s ease;
+  font-weight: 500;
+}
+
+/* Pending = red */
+.status.pending {
+  background: rgba(239,68,68,0.12);
+  color: var(--danger);
+}
+
+/* Completed = green */
+.status.completed {
+  background: rgba(16,185,129,0.12);
+  color: #059669;
+}
+
+
 .task-desc{color:var(--muted);flex:1}
 .task-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
 .task-footer small{color:var(--muted)}
+
+
+.complete-btn {
+  transition: opacity 10s ease;
+}
+
+.complete-btn[style*="hidden"] {
+  opacity: 0;
+}
+
 
 @media(max-width:640px){.tasks-grid{grid-template-columns:1fr}}
