@@ -35,7 +35,7 @@ export default function TaskCard({ task, onDelete, onComplete }) {
             }}
             onClick={() => onComplete(task._id)}
           >
-            complete
+            End Task
           </button>
 
           <Link to={`/tasks/edit/${task._id}`} className="btn small" >
